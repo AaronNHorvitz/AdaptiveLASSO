@@ -1,3 +1,8 @@
+# This was mostly taken from another depository.  It appears the code was originally written by Alexandre Gramfort. 
+# This is mostly his code with a few cosmetic changes for plotting, and annotation. 
+# Here is the Github link where I found it.  https://gist.github.com/agramfort/1610922
+
+
 
 def Adaptive_LASSO(X_train,y_train,max_iterations = 1000,lasso_iterations = 10, alpha = 0.1, tol = 0.001, max_error_up = 5, title = ''):
     
