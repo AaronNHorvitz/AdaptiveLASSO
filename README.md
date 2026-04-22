@@ -2,6 +2,19 @@
 
 `adaptive-lasso` is a small Python package that adds an adaptive LASSO estimator with a Statsmodels-style interface for linear regression.
 
+This repository began as a small adaptive LASSO experiment in 2019, informed
+by public examples and the academic literature. It was later revisited and
+rewritten into a small public package with a Statsmodels-style API, tests,
+clearer documentation, and a Jupyter notebook.
+
+The adaptive LASSO method itself comes from Hui Zou's 2006 paper, and this
+repository preserves attribution to Alexandre Gramfort's public GitHub demo
+that influenced the earlier exploratory version. To be clear, this repository
+does not claim authorship of the adaptive LASSO method or of the earlier demo
+that inspired the original experiment. The current codebase is a modern
+rewrite intended to make the method easier to use in a familiar Python
+workflow.
+
 An end-to-end walkthrough using a synthetic sparse dataset is available in
 [notebooks/adaptive_lasso_dummy_data.ipynb](/var/home/aaronnhorvitz/dev/AdaptiveLASSO/notebooks/adaptive_lasso_dummy_data.ipynb).
 
