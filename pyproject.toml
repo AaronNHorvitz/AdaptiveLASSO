@@ -31,6 +31,9 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
+  "ipykernel>=6.29",
+  "nbclient>=0.10",
+  "nbconvert>=7.16",
   "pytest>=8.0",
 ]
 
