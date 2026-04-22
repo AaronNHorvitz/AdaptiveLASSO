@@ -2,6 +2,9 @@
 
 `adaptive-lasso` is a small Python package that adds an adaptive LASSO estimator with a Statsmodels-style interface for linear regression.
 
+An end-to-end walkthrough using a synthetic sparse dataset is available in
+[notebooks/adaptive_lasso_dummy_data.ipynb](/var/home/aaronnhorvitz/dev/AdaptiveLASSO/notebooks/adaptive_lasso_dummy_data.ipynb).
+
 The public API is intentionally close to `statsmodels.regression.linear_model.OLS`:
 
 ```python
