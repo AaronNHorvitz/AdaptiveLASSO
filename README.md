@@ -23,6 +23,112 @@ The methodology follows Hui Zou's 2006 paper:
 - DOI: `10.1198/016214506000000735`
 - Publisher page: https://www.tandfonline.com/doi/abs/10.1198/016214506000000735
 
+## What Adaptive LASSO Is
+
+Adaptive LASSO is a sparse linear-regression method that starts from the same
+general goal as ordinary LASSO: estimate a coefficient vector while shrinking
+weak or noisy predictors toward zero. The key idea is that it does **not**
+penalize every coefficient equally. Instead, it uses an initial "pilot"
+estimate to decide which coefficients should be penalized more heavily and
+which should be penalized less.
+
+For a linear model with response vector $y \in \mathbb{R}^n$, design matrix
+$X \in \mathbb{R}^{n \times p}$, and coefficient vector
+$\beta \in \mathbb{R}^p$, ordinary least squares minimizes
+
+$$
+\frac{1}{2n}\lVert y - X\beta \rVert_2^2.
+$$
+
+Standard LASSO adds a uniform $\ell_1$ penalty:
+
+$$
+\hat{\beta}^{\mathrm{lasso}}
+=
+\arg\min_{\beta}
+\left\{
+\frac{1}{2n}\lVert y - X\beta \rVert_2^2
++
+\lambda \sum_{j=1}^p |\beta_j|
+\right\}.
+$$
+
+That penalty encourages sparsity because the $\ell_1$ term can drive some
+coefficients exactly to zero. The downside is that the same penalty strength is
+applied to every coefficient, which can introduce extra bias for large true
+signals.
+
+Adaptive LASSO modifies the penalty so that each coefficient gets its own
+weight:
+
+$$
+\hat{\beta}^{\mathrm{adapt}}
+=
+\arg\min_{\beta}
+\left\{
+\frac{1}{2n}\lVert y - X\beta \rVert_2^2
++
+\lambda \sum_{j=1}^p w_j |\beta_j|
+\right\},
+$$
+
+where the adaptive weights are typically defined using a pilot estimate
+$\tilde{\beta}$:
+
+$$
+w_j = \frac{1}{|\tilde{\beta}_j|^{\gamma} + \varepsilon},
+\qquad \gamma > 0.
+$$
+
+Here:
+
+- $\tilde{\beta}_j$ is the pilot estimate for coefficient $j$.
+- $\gamma$ controls how aggressively the weighting distinguishes strong and
+  weak predictors.
+- $\varepsilon$ is a small positive constant used in practice to avoid
+  division by zero when a pilot coefficient is exactly zero.
+
+This weighting scheme gives the method its name:
+
+- If $|\tilde{\beta}_j|$ is large, then $w_j$ is small, so coefficient $j$
+  receives a lighter penalty.
+- If $|\tilde{\beta}_j|$ is close to zero, then $w_j$ is large, so coefficient
+  $j$ is penalized more strongly.
+
+Intuitively, adaptive LASSO says: "if the pilot fit already suggests this
+predictor matters, be gentler with it in the sparse fit; if the pilot fit says
+it is weak, shrink it harder."
+
+Under suitable regularity conditions, this reweighting can improve variable
+selection relative to plain LASSO and can recover the so-called *oracle
+property*: asymptotically, the method can identify the correct active set and
+estimate the nonzero coefficients as if the irrelevant variables had been known
+in advance.
+
+## How This Package Implements It
+
+This package uses a Statsmodels-style outer reweighting loop around the OLS
+regularized solver:
+
+1. Fit or accept a pilot estimate $\tilde{\beta}$.
+2. Compute adaptive weights
+   $w_j = 1 / (|\tilde{\beta}_j|^{\gamma} + \varepsilon)$.
+3. Solve a weighted LASSO problem.
+4. Update the weights from the new coefficient vector.
+5. Repeat until the coefficients stop changing by more than the specified
+   tolerance or the maximum number of outer iterations is reached.
+
+In the package API, the user-facing `alpha` corresponds to the base penalty
+level, and the actual coefficient-specific penalty applied by the solver is
+
+$$
+\alpha_j^{\mathrm{effective}} = \alpha_j \, w_j.
+$$
+
+That design lets you do familiar Statsmodels-style things such as leaving the
+intercept unpenalized by passing a leading zero, for example
+`alpha=[0.0, 0.1, 0.1, ...]`.
+
 ## Installation
 
 ```bash
@@ -129,4 +235,3 @@ This repository currently targets linear regression through an `OLS`-compatible 
 ## Acknowledgements
 
 An earlier version of this repository was an exploratory script that referenced Alexandre Gramfort's public adaptive-LASSO gist. The current codebase is a fresh rewrite built around Statsmodels' public OLS API and the adaptive-LASSO literature above.
-
