@@ -59,22 +59,11 @@ For a linear model with response vector $y \in \mathbb{R}^n$, design matrix
 $X \in \mathbb{R}^{n \times p}$, and coefficient vector
 $\beta \in \mathbb{R}^p$, ordinary least squares minimizes
 
-$$
-\frac{1}{2n}\lVert y - X\beta \rVert_2^2.
-$$
+$$ \frac{1}{2n}\lVert y - X\beta \rVert_2^2. $$
 
 Standard LASSO adds a uniform $\ell_1$ penalty:
 
-$$
-\hat{\beta}^{\mathrm{lasso}}
-=
-\arg\min_{\beta}
-\left\{
-\frac{1}{2n}\lVert y - X\beta \rVert_2^2
-+
-\lambda \sum_{j=1}^p |\beta_j|
-\right\}.
-$$
+$$ \hat{\beta}^{\mathrm{lasso}} = \arg\min_{\beta} \left\{ \frac{1}{2n}\lVert y - X\beta \rVert_2^2 + \lambda \sum_{j=1}^p |\beta_j| \right\}. $$
 
 That penalty encourages sparsity because the $\ell_1$ term can drive some
 coefficients exactly to zero. The downside is that the same penalty strength is
@@ -84,24 +73,12 @@ signals.
 Adaptive LASSO modifies the penalty so that each coefficient gets its own
 weight:
 
-$$
-\hat{\beta}^{\mathrm{adapt}}
-=
-\arg\min_{\beta}
-\left\{
-\frac{1}{2n}\lVert y - X\beta \rVert_2^2
-+
-\lambda \sum_{j=1}^p w_j |\beta_j|
-\right\},
-$$
+$$ \hat{\beta}^{\mathrm{adapt}} = \arg\min_{\beta} \left\{ \frac{1}{2n}\lVert y - X\beta \rVert_2^2 + \lambda \sum_{j=1}^p w_j |\beta_j| \right\}. $$
 
 where the adaptive weights are typically defined using a pilot estimate
 $\tilde{\beta}$:
 
-$$
-w_j = \frac{1}{|\tilde{\beta}_j|^{\gamma} + \varepsilon},
-\qquad \gamma > 0.
-$$
+$$ w_j = \frac{1}{|\tilde{\beta}_j|^{\gamma} + \varepsilon}, \qquad \gamma > 0. $$
 
 Here:
 
@@ -144,9 +121,7 @@ regularized solver:
 In the package API, the user-facing `alpha` corresponds to the base penalty
 level, and the actual coefficient-specific penalty applied by the solver is
 
-$$
-\alpha_j^{\mathrm{effective}} = \alpha_j \, w_j.
-$$
+$$ \alpha_j^{\mathrm{effective}} = \alpha_j \, w_j. $$
 
 That design lets you do familiar Statsmodels-style things such as leaving the
 intercept unpenalized by passing a leading zero, for example
