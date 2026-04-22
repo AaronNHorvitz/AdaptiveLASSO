@@ -26,6 +26,13 @@ The methodology follows Hui Zou's 2006 paper:
 - DOI: `10.1198/016214506000000735`
 - Publisher page: https://www.tandfonline.com/doi/abs/10.1198/016214506000000735
 
+The statistical method is academic, but the specific Statsmodels-style API in
+this repository is a software design choice rather than a direct reproduction
+of a single canonical academic implementation. In other words: the adaptive
+LASSO idea comes from the literature, while the `statsmodels.OLS`-like
+interface in this package is the practical packaging decision made for this
+repository.
+
 ## What Adaptive LASSO Is
 
 Adaptive LASSO is a sparse linear-regression method that starts from the same
@@ -258,10 +265,3 @@ This repository also has a more specific implementation history:
 In other words: the algorithm is academic, the earliest repository version was
 influenced by a public demo, and the current package is a modern rewrite rather
 than a direct copy of that original exploratory script.
-
-## Licensing Note
-
-This repository does not currently include an open-source license file. Before
-publishing to PyPI or broadly redistributing the package, you should make an
-explicit licensing decision for the repository and confirm that you are
-comfortable doing so.
