@@ -235,6 +235,33 @@ If `refit=True`, the selected model is refit with ordinary least squares on the 
 
 This repository currently targets linear regression through an `OLS`-compatible model class. It does not yet implement adaptive regularization for `WLS`, `GLS`, or `GLM`.
 
-## Acknowledgements
+## Provenance And Acknowledgements
 
-An earlier version of this repository was an exploratory script that referenced Alexandre Gramfort's public adaptive-LASSO gist. The current codebase is a fresh rewrite built around Statsmodels' public OLS API and the adaptive-LASSO literature above.
+The adaptive LASSO algorithm itself comes from the statistical literature,
+especially:
+
+- Hui Zou, *The Adaptive Lasso and Its Oracle Properties*, Journal of the
+  American Statistical Association, 101(476), 1418-1429, 2006.
+
+This repository also has a more specific implementation history:
+
+- An earlier version of this repository began as a small personal exploratory
+  script written in 2019.
+- That exploratory version was informed by Alexandre Gramfort's public
+  adaptive-LASSO gist:
+  https://gist.github.com/agramfort/1610922
+- Gramfort's gist is published under the BSD 3-clause license.
+- The current repository is a substantial rewrite completed in 2026, with a
+  Statsmodels-style API, packaging, tests, documentation, and notebook
+  examples.
+
+In other words: the algorithm is academic, the earliest repository version was
+influenced by a public demo, and the current package is a modern rewrite rather
+than a direct copy of that original exploratory script.
+
+## Licensing Note
+
+This repository does not currently include an open-source license file. Before
+publishing to PyPI or broadly redistributing the package, you should make an
+explicit licensing decision for the repository and confirm that you are
+comfortable doing so.
